@@ -1,65 +1,55 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import * as React from 'react';
+import CarList from '../components/CarList';
 
-export default function Home() {
+import { DB } from '../config/db';
+
+export const config = {amp: true}
+
+function Home({result}) {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+    <div className='container'>
+      <CarList cars={result} />
+      <style jsx>{`
+        .container {
+          display: flex;
+          flex-direction: row;
+          align-self: center;
+          justify-content: flex-start; 
+          margin: 0px 30px;
+          padding: 10px;
+        }
+      `}</style>
+    </div> 
   )
 }
+
+// This gets called on every request
+export async function getServerSideProps() {
+  // Fetch data from external API
+  let db = await DB();
+
+  let result = await new Promise((resolve, reject) => {
+    db.collection('cars')
+    .get()
+    .then(snapshot => {
+      let data = [];
+      snapshot.forEach((doc) => {
+        data.push(Object.assign(doc.data(), {
+          id: doc.id,
+          created_at: doc.data().created_at.toDate()
+        }));
+      })
+      resolve(data)
+    })
+    .catch(error => {
+      reject([])
+    });
+  }) 
+
+  let data = JSON.stringify(result)
+  // Pass data to the page via props
+  return  {props: { result: JSON.parse(data) }};
+}
+
+
+export default Home;

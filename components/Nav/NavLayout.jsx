@@ -12,7 +12,7 @@ function NavLayout(){
           align-self: center;
           justify-content: flex-start; 
           margin: 0px 0px;
-          background: #c7ecee;
+          background: #34495e;
           padding: 10px; 30px;
         }
 
@@ -21,7 +21,7 @@ function NavLayout(){
           font-weight: 600;
           margin: 10px;
           text-decoration: none;
-          color: #34495e
+          color: #fff;
         }
       `}</style>
     </div>

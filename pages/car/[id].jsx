@@ -1,5 +1,9 @@
 import * as React from 'react';
+import Link from 'next/link'
+
 import { DB } from '../../config/db';
+import CarImages from "../../components/CarList/CarImages";
+import Head from 'next/head';
 
 export const config = {amp: true}
 
@@ -8,44 +12,38 @@ function Car({data}) {
 
   return (
     <div className="container">
+      <Head>
+        <title>Car {data.title}</title>
+        <meta name="title" content={`car-${data.title}`} />
+        <meta name="description" content={data.description} />
+        <meta name="author" content="Car List" />
+        <meta property="og:title" content={`car-${data.title}`} />
+        <meta property="og:site_name" content="Car List" />
+        <meta property="og:description" content={data.description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="/" />
+        <meta property="og:locale" content="en_IN" />
+        <meta property="og:image" content={data.imageUrl ? data.imageUrl[0] : "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80"} />
+        <meta property="og:image:type" content="image/png" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="Car List" />
+        <meta name="twitter:title" content={`car-${data.title}`} />
+        <meta name="twitter:description" content={data.description} />
+        <link rel="canonical" href="https://carlist-97672.web.app/" />
+      </Head>
       <div className="card-info">
-        <div className="image-container">
-          <div>
-            <amp-img
-              alt="A view of the sea"
-              src={data.imageUrl[0]}
-              width="100"
-              height="100"
-              layout="responsive"
-            ></amp-img>
+        <CarImages images={data.imageUrl} />
+        <div className="card-description">
+          <div className="car-details">
+            <h4 className="car">Brand: {data.title}</h4>
+            <p className="car">Price ${data.price}</p>
           </div>
-          <div className="other-images">
-            <amp-img
-              alt="A view of the sea"
-              src={data.imageUrl[1]}
-              width="100"
-              height="100"
-              
-            ></amp-img>
-              <amp-img
-              alt="A view of the sea"
-              src={data.imageUrl[2]}
-              width="100"
-              height="100"
-            ></amp-img>
-          </div>
-        </div>
-        <div className="details-container">
-          <div className="model-details">
-            <h4>{data.title}</h4>
-            <p>{data.price}</p>
-          </div>
-          <div>
-            <p>{data.description}</p>
-          </div>
+          <p className="car-description">{data.description}</p>
+          <p className="car-post-date">Posted on: {new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(data.created_at))}</p>
+          <Link href={`/`}><a className="details-button">Back</a></Link>
         </div>
       </div>
-      <style jsx>{`
+      <style jsx amp-custom>{`
         .container {
           display: flex;
           flex-direction: row;
@@ -56,17 +54,57 @@ function Car({data}) {
         }
 
         .card-info {
-          display: flex;
-          flex-direction: column;
+          background-color: #fff;
+          box-shadow: 3px 3px 5px 6px #cccccc40;
+          margin: 10px;
+          border-radius: 8px;
+          overflow: hidden;
+          width: 800px;
+          padding 10px;
         }
 
-        .image-container {
+        .card-description {
           display: flex;
           flex-direction: column;
+          padding: 0px 10px 0px 10px;
+          margin: 0px
         }
-        .other-images {
+
+        .car-details {
           display: flex;
-          flex-direction: row;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+
+        .car-description {
+          margin: 0;
+        }
+
+        .car-post-date {
+          margin: 8px 0px 0px 0px;
+          font-size: 12px;
+          color: #ccc;
+          font-style: italic;
+        }
+
+        .car {
+          margin: 0px 0px 10px 0px;
+        }
+
+        .details-button {
+          text-align: center;
+          padding: 8px 20px 8px 20px;
+          border: 1px solid #34495e;
+          border-radius: 4px;
+          text-decoration: none;
+          align-self: center;
+          margin: 10px;
+          color: #34495e;
+        }
+
+        .details-button:hover {
+          background-color: #34495e;
+          color: #ffff;
         }
       `}</style>
     </div>

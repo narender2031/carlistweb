@@ -9,27 +9,31 @@ export default function CarListItem({car}) {
     <>
       <div className="card">
         <amp-img
-          alt="A view of the sea"
+          alt={car.description}
           src={car.imageUrl[0]}
-          width="100"
-          height="100"
+          width="70"
+          height="40"
           layout="responsive"
         >
         </amp-img>
         <div className="card-description">
           <div className="car-details">
-            <h4>{car.title}</h4>
-            <p>{car.price}</p>
+            <p>Brand: {car.title}</p>
+            <p>Price ${car.price}</p>
           </div>
-          <p>{car.description}</p>
-          <Link href={`/car/${encodeURIComponent(car.id)}?amp=1`}>Details</Link>
+          <p className="car-description">{car.description}</p>
+          <p className="car-post-date">Posted on: {new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(car.created_at))}</p>
+          <Link href={`/car/${encodeURIComponent(car.id)}?amp=1`}><a className="details-button">Details</a></Link>
         </div>
       </div>
       <style jsx>{`
         .card {
           background-color: #fff;
-          box-shadow: 3px 3px 5px 6px #ccc;
+          box-shadow: 3px 3px 5px 6px #cccccc40;
           margin: 10px;
+          border-radius: 8px;
+          overflow: hidden;
+          width: 400px;
         }
 
         .card-description {
@@ -45,9 +49,33 @@ export default function CarListItem({car}) {
           justify-content: space-between;
         }
 
-        h4 {
-          margin: 10px;
+        .car-description {
+          margin: 0;
         }
+
+        .car-post-date {
+          margin: 8px 0px 0px 0px;
+          font-size: 12px;
+          color: #ccc;
+          font-style: italic;
+        }
+
+        .details-button {
+          text-align: center;
+          padding: 8px 20px 8px 20px;
+          border: 1px solid #34495e;
+          border-radius: 4px;
+          text-decoration: none;
+          align-self: center;
+          margin: 10px;
+          color: #34495e;
+        }
+
+        .details-button:hover {
+          background-color: #34495e;
+          color: #ffff;
+        }
+
       `}</style>
     </>
   )

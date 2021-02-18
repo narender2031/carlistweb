@@ -16,9 +16,10 @@ function CarList({cars}) {
       <style jsx>{`
         .card-list {
           display: flex;
-          flex-wrap: wrap;
           flex-direction: row;
-          justify-content: space-;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+          padding: 40px;
         }
       `}</style>
     </>

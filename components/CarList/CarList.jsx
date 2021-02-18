@@ -3,6 +3,9 @@ import * as React from 'react';
 import CarListItem from './CarListItem';
 
 function CarList({cars}) {
+
+  if (!cars) return null;
+ 
   return (
     <>
       <div className="card-list">

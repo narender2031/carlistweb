@@ -4,6 +4,8 @@ import { DB } from '../../config/db';
 export const config = {amp: true}
 
 function Car({data}) {
+  if (!data) return null;
+
   return (
     <div className="container">
       <div className="card-info">

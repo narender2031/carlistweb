@@ -7,39 +7,50 @@ import Head from 'next/head';
 
 export const config = {amp: true}
 
-function Car({data}) {
-  if (!data) return null;
+function Car({car}) {
+  if (!car) {
+    return (
+      <>
+        <h4>Oops no car to display this address! ;)</h4>
+        <style jsx>{`
+          h4 {
+            text-align: center
+          }
+        `}</style>
+      </>
+    )
+  }
 
   return (
     <div className="container">
       <Head>
-        <title>Car {data.title}</title>
-        <meta name="title" content={`car-${data.title}`} />
-        <meta name="description" content={data.description} />
+        <title>Car {car.title}</title>
+        <meta name="title" content={`car-${car.title}`} />
+        <meta name="description" content={car.description} />
         <meta name="author" content="Car List" />
-        <meta property="og:title" content={`car-${data.title}`} />
+        <meta property="og:title" content={`car-${car.title}`} />
         <meta property="og:site_name" content="Car List" />
-        <meta property="og:description" content={data.description} />
+        <meta property="og:description" content={car.description} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="/" />
         <meta property="og:locale" content="en_IN" />
-        <meta property="og:image" content={data.imageUrl ? data.imageUrl[0] : "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80"} />
+        <meta property="og:image" content={car.imageUrl ? car.imageUrl[0] : "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80"} />
         <meta property="og:image:type" content="image/png" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="Car List" />
-        <meta name="twitter:title" content={`car-${data.title}`} />
-        <meta name="twitter:description" content={data.description} />
+        <meta name="twitter:title" content={`car-${car.title}`} />
+        <meta name="twitter:description" content={car.description} />
         <link rel="canonical" href="https://carlist-97672.web.app/" />
       </Head>
       <div className="card-info">
-        <CarImages images={data.imageUrl} />
+        <CarImages images={car.imageUrl} />
         <div className="card-description">
           <div className="car-details">
-            <h4 className="car">Brand: {data.title}</h4>
-            <p className="car">Price ${data.price}</p>
+            <h4 className="car">Brand: {car.title}</h4>
+            <p className="car">Price ${car.price}</p>
           </div>
-          <p className="car-description">{data.description}</p>
-          <p className="car-post-date">Posted on: {new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(data.created_at))}</p>
+          <p className="car-description">{car.description}</p>
+          <p className="car-post-date">Posted on: {new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(car.created_at))}</p>
           <Link href={`/`}><a className="details-button">Back</a></Link>
         </div>
       </div>
@@ -118,7 +129,6 @@ export async function getServerSideProps({query}) {
     .doc(query.id)
     .get()
     .then(snapshot => {
-      console.log(snapshot.data());
       let data =Object.assign(snapshot.data(), {
         id: snapshot.id,
         created_at: snapshot.data().created_at.toDate()
@@ -127,13 +137,13 @@ export async function getServerSideProps({query}) {
       resolve(data);
     })
     .catch(error => {
-      reject({})
+      reject(null)
     })
   });
 
-  let data = JSON.stringify(result)
+  let car = JSON.stringify(result)
 
-  return {props: { data: JSON.parse(data)}}
+  return {props: { car: JSON.parse(car)}}
 }
 
 export default Car;

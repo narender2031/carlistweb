@@ -1,12 +1,26 @@
 import * as React from 'react';
 
 function CarImages({images}) {
+
+  if (!images || images.length === 0) {
+    return (
+      <>
+        <h4>Oops no Image for this car to display! ;)</h4>
+        <style jsx>{`
+          h4 {
+            text-align: center
+          }
+        `}</style>
+      </>
+    )
+  };
+
   return (
     <div className="image-list">
       {
-        images.map(image => {
+        images.map((image, index) => {
           return (
-            <div className="image-container">
+            <div className="image-container" key={`key-${index}`}>
               <amp-img
                 alt="A view of the sea"
                 src={image}

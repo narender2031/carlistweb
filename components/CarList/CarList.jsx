@@ -4,7 +4,18 @@ import CarListItem from './CarListItem';
 
 function CarList({cars}) {
 
-  if (!cars) return null;
+  if (!cars || cars.length === 0) {
+    return (
+      <>
+        <h4>No Car we have to display! ;)</h4>
+        <style jsx>{`
+          h4 {
+            text-align: center
+          }
+        `}</style>
+      </>
+    )
+  };
  
   return (
     <>

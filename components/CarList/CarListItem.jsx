@@ -3,7 +3,18 @@ import * as React from 'react';
 import Link from 'next/link'
 
 export default function CarListItem({car}) {
-  if (!car) return null;
+  if (!car) {
+    return (
+      <>
+        <h4>We found no information for you! ;)</h4>
+        <style jsx>{`
+          h4 {
+            text-align: center
+          }
+        `}</style>
+      </>
+    )
+  };
 
   return (
     <>

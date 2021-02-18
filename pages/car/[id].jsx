@@ -61,7 +61,7 @@ function Car({car}) {
           align-self: center;
           justify-content: flex-start; 
           margin: 0px 30px;
-          padding: 10px;
+          padding: 70px 10px 10px 10px;
         }
 
         .card-info {

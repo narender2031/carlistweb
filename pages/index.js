@@ -35,6 +35,7 @@ function Home({result}) {
           flex-direction: column;
           align-self: center;
           justify-content: flex-start;
+          padding-top: 40px;
         }
       `}</style>
     </div> 

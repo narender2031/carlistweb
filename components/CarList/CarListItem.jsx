@@ -33,7 +33,19 @@ export default function CarListItem({car}) {
             <p>Price ${car.price}</p>
           </div>
           <p className="car-description">{car.description}</p>
-          <p className="car-post-date">Posted on: {new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(car.created_at))}</p>
+          <span>
+            Posted on: 
+            <amp-timeago
+              layout="fixed"
+              width="160"
+              height="20"
+              datetime={car.created_at}
+              locale="en"
+            >  
+              <p className="car-post-date"> {car.created_at}</p>
+            </amp-timeago>
+          </span>
+          
           <Link href={`/car/${encodeURIComponent(car.id)}?amp=1`}><a className="details-button">Details</a></Link>
         </div>
       </div>
@@ -64,7 +76,15 @@ export default function CarListItem({car}) {
           margin: 0;
         }
 
-        .car-post-date {
+        amp-timeago {
+          font-size: 12px;
+          color: #ccc;
+          font-style: italic;
+          display: initial;
+          margin: 0px 10px;
+        }
+
+        span {
           margin: 8px 0px 0px 0px;
           font-size: 12px;
           color: #ccc;
